@@ -1,0 +1,9 @@
+services:
+  artifact:
+    image: python:3.12-slim
+    working_dir: /repo
+    command: python -m http.server 8000
+    ports:
+      - "127.0.0.1:8001:8000"
+    volumes:
+      - .:/repo:ro

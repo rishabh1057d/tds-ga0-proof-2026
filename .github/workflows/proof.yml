@@ -1,0 +1,14 @@
+name: TDS GA0 GitHub proof
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout assignment artifact
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Verify 23f3000755@ds.study.iitm.ac.in
+        run: python -c 'import json; assert json.load(open("email.json")) == {"email":"23f3000755@ds.study.iitm.ac.in"}; print("Email JSON verified")'
