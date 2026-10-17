@@ -16,7 +16,7 @@ function answer(question) {
   if (monthName || yearMatch) data = data.filter(x=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Kolkata',year:'numeric',month:'numeric'}).formatToParts(new Date(x.created_at)).map(v=>[v.type,v.value])); return (!monthName||Number(p.month)===months[monthName])&&(!yearMatch||Number(p.year)===Number(yearMatch[0]));});
   if (orderMatch) { const x=data[0]; return x ? (low.includes('status') ? x.status : low.includes('product') ? x.product : low.includes('customer') ? x.customer : low.includes('region') ? x.region : round(x.amount*(rates[x.currency]||1))) : null; }
   const refund = /refund|refunded/i.test(q);
-  const paid = /revenue|sales|sold|purchase|paid|spend|spending|order value/i.test(q) && !refund;
+  const paid = /revenue|sales|sold|purchase|paid|spend|spending|order value|earn/i.test(q) && !refund;
   const selected = data.filter(x => refund ? x.status==='refunded' : paid ? x.status==='paid' : true);
   if (/how many|number of|count of|count\b/i.test(low) && /order|refund|transaction|customer/i.test(low) && !/average|dollar|\busd\b|worth|revenue|amount/i.test(low)) {
     return /customer/i.test(low) && /unique|distinct/i.test(low) ? new Set(selected.map(x=>x.customer)).size : selected.length;
@@ -39,5 +39,6 @@ module.exports = (req,res) => {
   try { return res.status(200).json({answer:answer(req.body?.question)}); }
   catch(e) { return res.status(400).json({error:e.message}); }
 };
+
 
 
