@@ -19,7 +19,7 @@ function answer(question) {
   const paid = /revenue|sales|sold|purchase|paid|spend|spending|order value|earn/i.test(q) && !refund;
   const selected = data.filter(x => refund ? x.status==='refunded' : paid ? x.status==='paid' : true);
   if (/how many|number of|count of|count\b/i.test(low) && /order|refund|transaction|customer/i.test(low) && !/average|dollar|\busd\b|worth|revenue|amount/i.test(low)) {
-    return /customer/i.test(low) && /unique|distinct/i.test(low) ? new Set(selected.map(x=>x.customer)).size : selected.length;
+    return /customer/i.test(low) && /unique|distinct|different/i.test(low) ? new Set(selected.map(x=>x.customer)).size : selected.length;
   }
   if (/which product|best.?selling|top[- ]selling|top product|highest.*product|most.*product/i.test(low)) {
     const sums={}; for(const x of selected) sums[x.product]=(sums[x.product]||0)+(/revenue|sales|value/i.test(low)?x.amount*(rates[x.currency]||1):x.qty);
