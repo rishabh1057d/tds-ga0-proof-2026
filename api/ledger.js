@@ -21,7 +21,7 @@ function answer(question) {
   if (/how many|number of|count of|count\b/i.test(low) && /order|refund|transaction|customer/i.test(low)) {
     return /customer/i.test(low) && /unique|distinct/i.test(low) ? new Set(selected.map(x=>x.customer)).size : selected.length;
   }
-  if (/which product|best.?selling|top product|highest.*product|most.*product/i.test(low)) {
+  if (/which product|best.?selling|top[- ]selling|top product|highest.*product|most.*product/i.test(low)) {
     const sums={}; for(const x of selected) sums[x.product]=(sums[x.product]||0)+(/revenue|sales|value/i.test(low)?x.amount*(rates[x.currency]||1):x.qty);
     return Object.entries(sums).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]))[0]?.[0] ?? null;
   }
@@ -39,3 +39,4 @@ module.exports = (req,res) => {
   try { return res.status(200).json({answer:answer(req.body?.question)}); }
   catch(e) { return res.status(400).json({error:e.message}); }
 };
+
